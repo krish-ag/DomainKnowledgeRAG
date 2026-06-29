@@ -86,7 +86,7 @@ def query_corpus(
     except RuntimeError as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="The knowledge search service is unavailable",
+            detail=str(exc),
         ) from exc
 
     if not isinstance(answer, str) or not answer.strip():
@@ -98,10 +98,10 @@ def query_corpus(
     try:
         db.execute(
             """
-            INSERT INTO chat_messages (question, answer, user_id)
-            VALUES (?, ?, ?)
+            INSERT INTO chat_messages (question, answer, user_id, corpus_id)
+            VALUES (?, ?, ?, ?)
             """,
-            (question, answer.strip(), user_id),
+            (question, answer.strip(), user_id, corpus_id),
         )
         db.commit()
     except sqlite3.DatabaseError as exc:
@@ -130,10 +130,10 @@ def get_chat_history(
         """
         SELECT id, question, answer, created_at
         FROM chat_messages
-        WHERE user_id = ?
+        WHERE user_id = ? AND corpus_id = ?
         ORDER BY id DESC
         LIMIT ?
         """,
-        (user_id, limit),
+        (user_id, corpus_id, limit),
     ).fetchall()
     return [dict(row) for row in rows]

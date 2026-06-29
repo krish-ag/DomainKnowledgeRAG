@@ -1,0 +1,7 @@
+app.db
+.idea/
+__pycache__/
+.venv/
+uploads/*
+chroma_db/*
+old/

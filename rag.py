@@ -19,7 +19,7 @@ from typing import Any
 
 DEFAULT_TOP_K = 5
 DEFAULT_MAX_CONTEXT_CHARS = 12_000
-DEFAULT_MAX_DISTANCE = 0.8
+DEFAULT_MAX_DISTANCE = 1.5
 NO_CONTEXT_ANSWER = "I could not find relevant information in this corpus."
 
 TextGenerator = Callable[[str], str]
@@ -258,7 +258,7 @@ def retrieve_context(
     except RAGError:
         raise
     except Exception as exc:
-        raise RetrievalError("Could not retrieve corpus context") from exc
+        raise RetrievalError(f"Could not retrieve corpus context: {exc}") from exc
     if not isinstance(results, Mapping):
         raise RetrievalError("Search returned an invalid response")
     try:

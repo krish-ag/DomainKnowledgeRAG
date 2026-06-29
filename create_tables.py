@@ -40,8 +40,10 @@ def create_tables() -> None:
                 question TEXT NOT NULL,
                 answer TEXT NOT NULL,
                 user_id INTEGER,
+                corpus_id INTEGER,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+                FOREIGN KEY (corpus_id) REFERENCES corpora (id) ON DELETE CASCADE
             );
             """
         )
