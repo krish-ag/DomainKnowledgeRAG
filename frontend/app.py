@@ -5,8 +5,13 @@ from __future__ import annotations
 import requests
 import streamlit as st
 from streamlit_local_storage import LocalStorage
+from dotenv import load_dotenv
+import os
 
-BASE_URL = "http://localhost:8000"
+load_dotenv()
+
+
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 _ls = LocalStorage()
 
 
